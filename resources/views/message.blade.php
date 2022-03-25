@@ -14,7 +14,7 @@
                 </ul>
             </div>
         @endif
-        <form method="post" action="/message/check">
+        <form method="post" enctype="multipart/form-data" action="/message/check">
             @csrf
             <div class="mb-3">
                 <label for="theme" class="form-label">Тема сообщения</label>
@@ -25,8 +25,8 @@
                 <textarea class="form-control" id="message" name="message" rows="3" placeholder="Ваше сообщение"></textarea>
             </div>
             <div class="mb-3">
-                <label for="formFileSm" class="form-label">Прикрепите файл</label>
-                <input class="form-control form-control-sm" name="media" id="formFileSm" type="file">
+                <label for="file" class="form-label">Прикрепите файл</label>
+                <input class="form-control form-control-sm" name="file" id="file" type="file">
               </div>
             <button type="submit" class="btn-success">Чирикнуть</button>
         </form>

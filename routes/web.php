@@ -17,5 +17,5 @@ Route::get('/', [MainController::class,'home']);
 
 Route::get('/about', [MainController::class,'about']);
 
-Route::get('/message', [MainController::class,'message']);
+Route::get('/message', [MainController::class,'message'])->name('message');
 Route::post('/message/check', [MainController::class,'message_check']);
