@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
     public function home(){
-        $post = new Post();
-        return view('home', ['posts' => $post->all()]);
+        $posts = new Post();
+        return view('home', ['posts' => $posts->all()]);
     }
 
     public function about(){
@@ -17,7 +18,13 @@ class MainController extends Controller
     }
 
     public function message(){
-        return view('message');
+        if(Auth::check()){
+            return view('message');
+        }else{
+            return redirect(route('user.login'))->withErrors([
+                'messageError' => 'Войдите, чтобы публиковать посты'
+            ]);
+        }
     }
 
     public function message_check(Request $request)
@@ -27,16 +34,23 @@ class MainController extends Controller
             'message' => 'required|min:5|max:150'
         ]);
 
-        $post = new Post();
+        $post = new Post($valid);
+        $post->user_id = Auth::id();
+        $post->likes = 0;
         if($request->hasFile('file'))
         {   
             $post->addMedia($request->file('file'))->toMediaCollection('media');
         };
-        $post->theme = $request->theme;
-        $post->message = $request->message;
-        
         $post->save();
 
         return redirect()->route('message');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }

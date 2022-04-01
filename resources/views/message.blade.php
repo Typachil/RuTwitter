@@ -14,7 +14,7 @@
                 </ul>
             </div>
         @endif
-        <form method="post" enctype="multipart/form-data" action="/message/check">
+        <form method="post" enctype="multipart/form-data" action="{{route('message_post')}}">
             @csrf
             <div class="mb-3">
                 <label for="theme" class="form-label">Тема сообщения</label>

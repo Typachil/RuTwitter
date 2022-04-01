@@ -8,6 +8,7 @@
     <link type="image/png" rel="icon" href="favicon.png">
     <title>@yield('title') | Chirrup</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"  type="text/css" href="css/style.css">
 </head>
 
 <body>
@@ -28,8 +29,16 @@
                     <input type="search" class="form-control form-control-dark" placeholder="Поиск..." aria-label="Search">
                 </form>
                 <div class="text-end">
-                    <button type="button" class="btn btn-outline-light me-2">Войти</button>
-                    <button type="button" class="btn btn-warning">Зарегестрироватся</button>
+                    @if ($authUser)
+                        <a href="/private" class="profile"><img src="img/defaultUserImg.png" alt="Фото пользователя"></a>
+                        <div class="profile-popup flex-column justify-content-around">
+                            <a href=""><button type="button" class="btn btn-warning mb-2">Редактировать</button></a>
+                            <a href="/logout"><button type="button" class="btn btn-danger w-100">Выйти</button></a>
+                        </div>
+                    @else
+                        <a href="/login"><button type="button" class="btn btn-outline-light me-2">Войти</button></a>
+                        <a href="/registration"><button type="button" class="btn btn-warning">Зарегестрироватся</button></a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -48,4 +57,5 @@
         </div>
     </footer>
 </body>
+<script src="js/index.js"></script>
 </html>

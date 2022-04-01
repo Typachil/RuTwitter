@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\RegisterController;
+use Illuminate\Auth\Events\Logout;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,4 +23,27 @@ Route::get('/', [MainController::class,'home']);
 Route::get('/about', [MainController::class,'about']);
 
 Route::get('/message', [MainController::class,'message'])->name('message');
-Route::post('/message/check', [MainController::class,'message_check']);
+Route::post('/message', [MainController::class,'message_check'])->middleware('auth')->name('message_post');
+
+Route::name('user.')->group(function(){
+    Route::view('/private', 'private')->middleware('auth')->name('private');
+    Route::get('/login', function(){
+        if(Auth::check()){
+            return redirect(route('user.private'));
+        }
+        return view('login');
+    })->name('login');
+
+    Route::post('/login', [LoginController::class, 'login']);
+
+    Route::get('/logout', [MainController::class, 'logout'])->name('logout');
+
+    Route::get('/registration', function(){
+        if(Auth::check()){
+            return redirect(route('user.private'));
+        }
+        return view('registration');
+    })->name('registration');
+
+    Route::post('registration', [RegisterController::class, 'save']);
+});
