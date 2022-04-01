@@ -18,12 +18,14 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', [MainController::class,'home']);
+Route::get('/', [MainController::class,'home'])->name('home');
 
 Route::get('/about', [MainController::class,'about']);
 
 Route::get('/message', [MainController::class,'message'])->name('message');
 Route::post('/message', [MainController::class,'message_check'])->middleware('auth')->name('message_post');
+
+Route::post('/comment_post', [MainController::class,'comment_post'])->name('comment');
 
 Route::name('user.')->group(function(){
     Route::view('/private', 'private')->middleware('auth')->name('private');

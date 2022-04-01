@@ -3,7 +3,7 @@
 @section('title') Главная страница @endsection
 
 @section('main_content')
-    <h1>Последние новости</h1>
+    <h1 class="d-flex justify-content-center mb-4">Последние новости</h1>
     <div class="d-flex flex-column align-items-center justify-content-center">
           @foreach($posts->reverse() as $el)
             <div class="card shadow-sm w-50 mb-5 post">
@@ -12,7 +12,7 @@
                   <div>{{$el->user->name}}</div>
               </div>
               @php $photoSrc = $el->getMedia('media')->first() @endphp
-              <img width="50%" height="50%" style="margin: 0 auto" src="{{$photoSrc->getUrl('thumb')}}" alt="Картинка">
+              <img width="50%" height="50%" style="margin: 0 auto" src="{{$photoSrc->getUrl()}}" alt="Картинка">
               <div class="card-body">
                 <h4 class="card-title">{{$el->theme}}</h4>
                 <p class="card-text">{{$el->message}}</p>
@@ -25,11 +25,24 @@
                 </div>
                 Опубликовано: {{$el->created_at}}
               </div>
-              <div class="card-footer text-muted">
-                <button>Показать комментарии</button>
-                <form action="" class="form-comment mt-3">
+              <div class="card-footer">
+                <button class="text-primary mb-2">Показать комментарии</button>
+                <div class="comments-list">
+                  @foreach ($el->comments as $comment)
+                    <div class="comment d-flex">
+                      <div class="comment-user_avatar"><img src="img/defaultUserImg.png" alt="Фото пользователя"></div>
+                      <div>
+                        <div class="comment-user_name">{{$comment->user->name}}</div>
+                        <div class="comment-message">{{$comment->message}}</div>
+                      </div>
+                    </div>
+                  @endforeach
+                </div>
+                <form method="POST" action="{{route('comment')}}" class="form-comment mt-3">
+                  @csrf
                   <img src="img/defaultUserImg.png" width="36" height="36" alt="Аватарка">
-                  <input type="text" class="comment w-100" name="comment" placeholder="Напишите комментарий">
+                  <input type="text" class="comment w-100" name="message" placeholder="Напишите комментарий">
+                  <input type="hidden" id="postId" name="postId" value="{{$el->id}}">
                   <button type="submit"><img src="img/send.jpg" alt="Отправить"></button>
                 </form>
               </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +26,17 @@ class MainController extends Controller
                 'messageError' => 'Войдите, чтобы публиковать посты'
             ]);
         }
+    }
+
+    public function comment_post(Request $request){
+        $valid = $request->validate([
+            'message' => 'required'
+        ]);
+        $comment = new Comment($valid);
+        $comment->user_id = Auth::id();
+        $comment->post_id = $request->postId;
+        $comment->save();
+        return redirect()->route('home');
     }
 
     public function message_check(Request $request)
