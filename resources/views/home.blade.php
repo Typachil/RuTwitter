@@ -26,7 +26,7 @@
                 Опубликовано: {{$el->created_at}}
               </div>
               <div class="card-footer">
-                <button class="text-primary mb-2">Показать комментарии</button>
+                <button class="text-primary mb-2 button-showComments">Показать комментарии</button>
                 <div class="comments-list">
                   @foreach ($el->comments as $comment)
                     <div class="comment d-flex">

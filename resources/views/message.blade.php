@@ -3,8 +3,8 @@
 @section('title') Что нового? @endsection
 
 @section('main_content')
-    <h1>Что у вас нового?</h1>
-    <div class="row justify-content-center border border-secondary rounded p-3">
+    <h1 class="mt-3 mb-4">Что у вас нового?</h1>
+    <div class="row justify-content-center border border-secondary rounded p-3" style="margin-bottom: 30%">
         @if($errors->any())
             <div class="alert alert-danger">
                 <ul>

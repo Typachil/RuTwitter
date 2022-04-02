@@ -30,3 +30,7 @@
     display: flex;
     flex: column;
 }
+
+.comments-list{
+    display: none;
+}
