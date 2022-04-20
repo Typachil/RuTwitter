@@ -76,8 +76,8 @@
                 <div class="col-md-6 d-flex justify-content-start">
                     <!-- Checkbox -->
                     <div class="form-check mb-3 mb-md-0">
-                    <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
-                    <label class="form-check-label" for="loginCheck"> Запомнить меня </label>
+                    <input class="form-check-input" type="checkbox" id="loginRemember" name="loginRemember" checked />
+                    <label class="form-check-label" for="loginRemember"> Запомнить меня </label>
                     </div>
                 </div>
 

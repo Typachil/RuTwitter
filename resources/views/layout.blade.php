@@ -32,7 +32,7 @@
                     @if ($authUser)
                         <a href="/private" class="profile"><img src="img/defaultUserImg.png" alt="Фото пользователя"></a>
                         <div class="profile-popup flex-column justify-content-around">
-                            <a href=""><button type="button" class="btn btn-warning mb-2">Редактировать</button></a>
+                            <a href="{{route('settings')}}"><button type="button" class="btn btn-warning mb-2">Редактировать</button></a>
                             <a href="/logout"><button type="button" class="btn btn-danger w-100">Выйти</button></a>
                         </div>
                     @else

@@ -1,4 +1,4 @@
-.post button{
+.post .social-button button, .post .card-footer button{
     background-color: transparent;
     border: none;
     margin-right: 1em;
@@ -34,3 +34,5 @@
 .comments-list{
     display: none;
 }
+
+

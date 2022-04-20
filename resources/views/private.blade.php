@@ -4,20 +4,33 @@
 
 @section('main_content')
     <h2 class="d-flex justify-content-center mb-4">Ваши посты</h2>
+    @if (session('status'))
+      <div class="alert alert-success">
+          {{ session('status') }}
+      </div>
+    @endif
     <div class="d-flex flex-column align-items-center justify-content-center">
         @foreach($user_posts->reverse() as $el)
           <div class="card shadow-sm w-50 mb-5 post">
-            <div class="card-header d-flex align-items-center">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <div>
                 <img src="img/defaultUserImg.png" alt="Фото пользователя">
-                <div>{{$el->user->name}}</div>
+                <span>{{$el->user->name}}</span>
+              </div>
+              <div>
+                <a href="{{route('show_oneMessage', $el->id)}}" class="btn btn-primary">Редактировать</a>
+                <a href="{{route('del_oneMessage', $el->id)}}" class="btn btn-warning">Удалить</a>
+              </div>
             </div>
             @php $photoSrc = $el->getMedia('media')->first() @endphp
-            <img width="50%" height="50%" style="margin: 0 auto" src="{{$photoSrc->getUrl()}}" alt="Картинка">
+            @if ($photoSrc)
+              <img width="50%" height="50%" style="margin: 0 auto" src="{{$photoSrc->getUrl()}}" alt="Картинка">
+            @endif
             <div class="card-body">
               <h4 class="card-title">{{$el->theme}}</h4>
               <p class="card-text">{{$el->message}}</p>
               <hr>
-              <div class="d-flex">
+              <div class="d-flex social-button">
                 <button type="button"><img src="img/like.png" alt="Лайк"></button>
                 <button type="button" class="button-comment"><img src="img/comment.png" alt="Комментарий"></button>
                 <button type="button"><img src="img/repost.png" alt="Репост"></button>

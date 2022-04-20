@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class MainController extends Controller
 {
     public function home(){
+        //Объявление модели Post
         $posts = new Post();
+        //Метод $posts->all() передает все записи таблицы
         return view('home', ['posts' => $posts->all()]);
     }
 
     public function about(){
         return view('about');
+    }
+
+    public function settings(){
+        $user = User::find(Auth::id());
+        return view('settings', ['user' => $user]);
     }
 
     public function message(){
@@ -26,36 +33,6 @@ class MainController extends Controller
                 'messageError' => 'Войдите, чтобы публиковать посты'
             ]);
         }
-    }
-
-    public function comment_post(Request $request){
-        $valid = $request->validate([
-            'message' => 'required'
-        ]);
-        $comment = new Comment($valid);
-        $comment->user_id = Auth::id();
-        $comment->post_id = $request->postId;
-        $comment->save();
-        return redirect()->route('home');
-    }
-
-    public function message_check(Request $request)
-    {
-        $valid = $request->validate([
-            'theme' => 'required|min:5|max:60',
-            'message' => 'required|min:5|max:150'
-        ]);
-
-        $post = new Post($valid);
-        $post->user_id = Auth::id();
-        $post->likes = 0;
-        if($request->hasFile('file'))
-        {   
-            $post->addMedia($request->file('file'))->toMediaCollection('media');
-        };
-        $post->save();
-
-        return redirect()->route('message');
     }
 
     public function logout(Request $request)
