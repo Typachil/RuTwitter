@@ -24,10 +24,13 @@ class PostController extends Controller
         $post = Post::find($id);
         foreach(json_decode($post->likes) as $key => $value){
             if($value == $request->userid){
-                array_splice(json_decode($post->likes), $key, 1);
-                $post->update(['likes' => $post->likes]);
+                $likes = json_decode($post->likes);
+                array_splice($likes, $key, 1);
+                //$post->update(['likes' => json_encode($likes)]);
+                $post->likes = $likes;
+                $post->save();
 
-                $data = ["likes_value" => count($post->likes)];
+                $data = ["likes_value" => count($likes)];
                 return $data;
             }
         };

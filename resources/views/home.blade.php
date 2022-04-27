@@ -40,7 +40,6 @@
                     data-postId="{{$el->id}}">
                     <img src="img/like.png" alt="Лайк"></button>
                     <span>{{count(json_decode($el->likes))}}</span>
-                    {{$el->likes}}
                   </div>
                   <div class="social-comments">
                     <button type="button" class="button-comment"><img src="img/comment.png" alt="Комментарий"></button>
