@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('theme');
             $table->string('message');
             $table->string('user_id');
-            $table->integer('likes');
+            $table->json('likes')->nullable();
         });
     }
 

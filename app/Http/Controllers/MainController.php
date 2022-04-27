@@ -13,7 +13,7 @@ class MainController extends Controller
         //Объявление модели Post
         $posts = new Post();
         //Метод $posts->all() передает все записи таблицы
-        return view('home', ['posts' => $posts->all()]);
+        return view('home', ['posts' => $posts->all(), 'user' => Auth::user()]);
     }
 
     public function about(){
@@ -41,5 +41,51 @@ class MainController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    public function change_password(Request $request){
+        $validateFields = $request->validate([
+            'password' => 'required',
+            'newPassword' => 'required',
+            'newPasswordRepeat' => 'required'
+        ]);
+
+        if(!Auth::attempt(['id' => Auth::id(), 'password' => $validateFields['password']])){
+            return redirect(route('settings'))->withErrors([
+                'password' => 'Неправильный пароль'
+            ]);
+        }
+
+        if($validateFields['newPassword'] !== $validateFields['newPasswordRepeat']){
+            return redirect(route('settings'))->withErrors([
+                'newPasswordRepeat' => 'Пароли не соотвествуют друг другу'
+            ]);
+        }
+
+        $user = User::find(Auth::id());
+        $user->update(['password' => $validateFields['newPassword']]);
+
+        return redirect(route('settings'))->with('status', 'Пароль успешно обновлен');
+    }
+
+    public function change_email(Request $request){
+        $validateFields = $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::find(Auth::id());
+        $user->update($validateFields);
+
+        return redirect(route('settings'))->with('status', 'Email успешно обновлен');
+    }
+
+    public function change_avatar(Request $request){
+        $user = User::find(Auth::id());
+
+        if($request->hasFile('file'))
+        {   
+            $user->addMedia($request->file('file'))->toMediaCollection('avatars');
+        };
+        return redirect(route('settings'))->with('status', 'Аватар успешно обновлен');
     }
 }

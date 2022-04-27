@@ -1,1 +1,76 @@
 require('./bootstrap');
+
+const buttonsComment = document.querySelectorAll('.button-comment');
+const buttonsShowComments = document.querySelectorAll('.button-showComments');
+const buttonsShowSettingsEdit = document.querySelectorAll('.change_button');
+
+const formAvatarChange = document.querySelector('#formAvatarChange');
+const formPasswordChange = document.querySelector('#formPasswordChange');
+const formEmailChange = document.querySelector('#formEmailChange');
+
+const buttonsLikePost = document.querySelectorAll('.social-button .social-like button')
+
+buttonsComment.forEach((buttonItem) => buttonItem.addEventListener('click', (e) => {
+    e.preventDefault();
+    const formComment = e.target.closest('.post').querySelector('.form-comment');
+    formComment.style.display = 'flex';
+}));
+
+buttonsShowComments.forEach((buttonItem) => buttonItem.addEventListener('click', (e) =>{
+    e.preventDefault();
+    const listComments = e.target.closest('.post').querySelector('.comments-list')
+    listComments.style.display = 'block';
+}));
+
+buttonsShowSettingsEdit.forEach((buttonItem) => buttonItem.addEventListener('click', (e) =>{
+    e.preventDefault();
+    const currentBlock = e.target.closest('.block'); 
+    const formEdit = currentBlock.querySelector('.form-edit');
+    const blockChange = currentBlock.querySelector('.block-change');
+    formEdit.style.display = 'flex';
+    blockChange.style.display = 'none';
+}));
+
+buttonsLikePost.forEach((buttonItem) => buttonItem.addEventListener('click', async (e) =>{
+    e.preventDefault();
+    const valueLikesSpan = e.target.closest('.social-like').querySelector('span')
+    let data = {
+        "userid" : buttonItem.dataset.userid
+    }
+    let reponse = await fetch(`/message/${buttonItem.dataset.postid}/like`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            "X-CSRF-Token": document.querySelector('input[name=_token]').value
+        },
+        body : JSON.stringify(data)
+    })
+        
+    let result = await reponse.json();
+    console.log(result);
+    valueLikesSpan.innerText = result.likes_value;
+}));
+
+
+// formPasswordChange.onsubmit = async(e) => {
+//     e.preventDefault();
+
+//     let data = {
+//         'password': formPasswordChange.elements.password.value,
+//         'newPassword' : formPasswordChange.elements.newPassword.value,
+//         'newPasswordRepeat' : formPasswordChange.elements.newPasswordRepeat.value
+//     }
+//     let reponse = await fetch('/settings/password', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Accept': 'application/json',
+//             "X-CSRF-Token": formPasswordChange.querySelector('input[name=_token]').value
+//         },
+//         body : JSON.stringify(data)
+//     })
+
+//     let result = await reponse.json();
+//     console.log(result);
+// }

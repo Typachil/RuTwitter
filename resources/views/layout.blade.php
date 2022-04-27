@@ -8,7 +8,7 @@
     <link type="image/png" rel="icon" href="favicon.png">
     <title>@yield('title') | Chirrup</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet"  type="text/css" href="css/style.css">
+    <link rel="stylesheet"  type="text/css" href="/css/app.css">
 </head>
 
 <body>
@@ -16,7 +16,7 @@
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <img width="64px" height="64px" src="img/Chirrup.png" alt="Лого">
+                    <img width="64px" height="64px" src="/img/Chirrup.png" alt="Лого">
                     <h1>Chirrup</h1>
                 </a>
 
@@ -30,7 +30,16 @@
                 </form>
                 <div class="text-end">
                     @if ($authUser)
-                        <a href="/private" class="profile"><img src="img/defaultUserImg.png" alt="Фото пользователя"></a>
+                        <a href="/private" class="profile">
+                            @php $avatarSrc = $user->getMedia('avatars')->first() @endphp
+                            @if($avatarSrc)
+                                <div style='width: 60px; height: 60px;' class="me-2">
+                                    <img class="header-avatar" src="{{$avatarSrc->getUrl()}}" alt="Фото пользователя">
+                                </div>
+                            @else 
+                                <img src="/img/defaultUserImg.png" alt="Фото пользователя">
+                            @endif
+                        </a>
                         <div class="profile-popup flex-column justify-content-around">
                             <a href="{{route('settings')}}"><button type="button" class="btn btn-warning mb-2">Редактировать</button></a>
                             <a href="/logout"><button type="button" class="btn btn-danger w-100">Выйти</button></a>
@@ -57,5 +66,5 @@
         </div>
     </footer>
 </body>
-<script src="js/index.js"></script>
+<script src="/js/app.js"></script>
 </html>

@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\User;
 
 class ComposerServiceProvider extends ServiceProvider
 {
@@ -27,7 +28,7 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('layout', function($view) {
-            $view->with(['authUser' => Auth::check()]);
+            $view->with(['authUser' => Auth::check(), 'user' => User::find(Auth::id())]);
         });
 
         View::composer('private', function($view){

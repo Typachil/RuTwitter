@@ -10,11 +10,20 @@
     <div class="d-flex flex-column align-items-center justify-content-center">
           @foreach($posts->reverse() as $el)
             <div class="card shadow-sm w-50 mb-5 post">
+              @php 
+                $photoSrc = $el->getMedia('media')->first(); 
+                $avatarSrc = $el->user->getMedia('avatars')->first(); 
+              @endphp
               <div class="card-header d-flex align-items-center">
-                  <img src="img/defaultUserImg.png" alt="Фото пользователя">
+                  @if ($avatarSrc)
+                    <div style='width: 60px; height: 60px;' class="me-2">
+                      <img class="post-avatar" src="{{$avatarSrc->getUrl()}}" alt="Картинка">
+                    </div>
+                  @else
+                    <img src="img/defaultUserImg.png" alt="Фото пользователя">
+                  @endif
                   <div>{{$el->user->name}}</div>
               </div>
-              @php $photoSrc = $el->getMedia('media')->first() @endphp
               @if ($photoSrc)
                 <img width="50%" height="50%" style="margin: 0 auto" src="{{$photoSrc->getUrl()}}" alt="Картинка">
               @endif
@@ -23,10 +32,26 @@
                 <p class="card-text">{{$el->message}}</p>
                 <hr>
                 <div class="d-flex social-button">
-                  <button type="button"><img src="img/like.png" alt="Лайк"></button>
-                  <button type="button" class="button-comment"><img src="img/comment.png" alt="Комментарий"></button>
-                  <button type="button"><img src="img/repost.png" alt="Репост"></button>
-                  <button type="button"><img src="img/share.png" alt="Поделится"></button>
+                  <div class="social-like">
+                    <button type="button" 
+                    @if ($user)
+                      data-userId="{{$user->id}}" 
+                    @endif
+                    data-postId="{{$el->id}}">
+                    <img src="img/like.png" alt="Лайк"></button>
+                    <span>{{count(json_decode($el->likes))}}</span>
+                    {{$el->likes}}
+                  </div>
+                  <div class="social-comments">
+                    <button type="button" class="button-comment"><img src="img/comment.png" alt="Комментарий"></button>
+                    {{count($el->comments)}}
+                  </div>
+                  <div class="social-repost">
+                    <button type="button"><img src="img/repost.png" alt="Репост"></button>
+                  </div>
+                  <div class="social-share">
+                    <button type="button"><img src="img/share.png" alt="Поделится"></button>
+                  </div>
                 </div>
                 Опубликовано: {{$el->created_at}}
               </div>
@@ -35,7 +60,14 @@
                 <div class="comments-list">
                   @foreach ($el->comments as $comment)
                     <div class="comment d-flex">
-                      <div class="comment-user_avatar"><img src="img/defaultUserImg.png" alt="Фото пользователя"></div>
+                      @php $commentAvatarSrc = $comment->user->getMedia('avatars')->first() @endphp
+                      @if ($commentAvatarSrc)
+                        <div style='width: 60px; height: 60px;' class="me-2">
+                          <img class="comment-user_avatar" src="{{$commentAvatarSrc->getUrl()}}" alt="Картинка">
+                        </div>
+                      @else
+                        <img src="img/defaultUserImg.png" alt="Фото пользователя">
+                      @endif
                       <div>
                         <div class="comment-user_name">{{$comment->user->name}}</div>
                         <div class="comment-message">{{$comment->message}}</div>
@@ -45,7 +77,17 @@
                 </div>
                 <form method="POST" action="{{route('comment')}}" class="form-comment mt-3">
                   @csrf
-                  <img src="img/defaultUserImg.png" width="36" height="36" alt="Аватарка">
+                  @php
+                    $currentAvatarSrc = null;
+                    if($user) $currentAvatarSrc = $user->getMedia('avatars')->first();
+                  @endphp
+                  @if ($currentAvatarSrc)
+                    <div style='width: 36px; height: 36px;' class="me-2">
+                      <img class="comment-user_avatar" src="{{$currentAvatarSrc->getUrl()}}" alt="Картинка">
+                    </div>
+                  @else
+                    <img src="img/defaultUserImg.png" width="36" height="36" alt="Аватарка">
+                  @endif
                   <input type="text" class="comment w-100" name="message" placeholder="Напишите комментарий">
                   <input type="hidden" id="postId" name="postId" value="{{$el->id}}">
                   <button type="submit"><img src="img/send.jpg" alt="Отправить"></button>

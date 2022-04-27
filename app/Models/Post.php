@@ -14,7 +14,7 @@ class Post extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['theme','message'];
+    protected $fillable = ['theme','message', 'likes' => 'array'];
 
     public function user()
     {

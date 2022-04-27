@@ -23,6 +23,9 @@ Route::get('/', [MainController::class,'home'])->name('home');
 Route::get('/about', [MainController::class,'about']);
 
 Route::get('/settings', [MainController::class,'settings'])->middleware('auth')->name('settings');
+Route::post('/settings/password', [MainController::class,'change_password'])->middleware('auth')->name('change_password');
+Route::post('/settings/email', [MainController::class,'change_email'])->middleware('auth')->name('change_email');
+Route::post('/settings/avatar', [MainController::class,'change_avatar'])->middleware('auth')->name('change_avatar');
 
 Route::get('/message', [MainController::class,'message'])->name('message');
 Route::post('/message', [PostController::class,'messageCreate'])->middleware('auth')->name('message_post');
@@ -30,6 +33,7 @@ Route::get('/message/{id}/show', [PostController::class,'showOneMessage'])->midd
 Route::put('/message/{id}/edit', [PostController::class,'editOneMessage'])->middleware(['confpostuser','auth'])->name('edit_oneMessage');
 Route::get('/message/{id}/delete', [PostController::class,'delOneMessage'])->middleware(['confpostuser','auth'])->name('del_oneMessage');
 
+Route::post('/message/{id}/like', [PostController::class,'messageLike'])->middleware('auth')->name('message_like');
 Route::post('/comment_post', [PostController::class,'commentPost'])->name('comment');
 
 Route::name('user.')->group(function(){

@@ -20,6 +20,24 @@ class PostController extends Controller
         return redirect()->route('home');
     }
 
+    public function messageLike($id, Request $request){
+        $post = Post::find($id);
+        foreach(json_decode($post->likes) as $key => $value){
+            if($value == $request->userid){
+                array_splice(json_decode($post->likes), $key, 1);
+                $post->update(['likes' => $post->likes]);
+
+                $data = ["likes_value" => count($post->likes)];
+                return $data;
+            }
+        };
+        $post->likes = array_merge(json_decode($post->likes), [$request->userid]);
+        $post->save();
+
+        $data = ["likes_value" => count($post->likes)];
+        return $data;
+    }
+
     public function messageCreate(Request $request)
     {
         $valid = $request->validate([
@@ -29,7 +47,7 @@ class PostController extends Controller
 
         $post = new Post($valid);
         $post->user_id = Auth::id();
-        $post->likes = 0;
+        $post->likes = json_encode(array());
         if($request->hasFile('file'))
         {   
             $post->addMedia($request->file('file'))->toMediaCollection('media');
@@ -52,7 +70,6 @@ class PostController extends Controller
 
         $post = Post::find($id);
         $post->update($valid);
-        $post->save();
 
         return redirect()->route('user.private')->with('status', 'Пост успешно обновлен');
     }
