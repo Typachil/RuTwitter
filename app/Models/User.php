@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Models\Post;
+use App\Models\Subscriptions;
+use App\Models\Repost;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -47,5 +50,20 @@ class User extends Authenticatable implements HasMedia
 
     public function setPasswordAttribute($password){
         $this->attributes['password'] = Hash::make($password);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'user_id', 'id');
+    }
+
+    public function subscribeUsers()
+    {
+        return $this->hasMany(Subscriptions::class, 'user_id', 'id');
+    }
+
+    public function reposts()
+    {
+        return $this->hasMany(Repost::class, 'user_id', 'id');
     }
 }

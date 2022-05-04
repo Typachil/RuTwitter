@@ -30,10 +30,5 @@ class ComposerServiceProvider extends ServiceProvider
         View::composer('layout', function($view) {
             $view->with(['authUser' => Auth::check(), 'user' => User::find(Auth::id())]);
         });
-
-        View::composer('private', function($view){
-            $posts = new Post();
-            $view->with(['user_posts' => $posts->all()->where('user_id', Auth::user()->id)]);
-        });
     }
 }

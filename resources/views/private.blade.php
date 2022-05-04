@@ -10,7 +10,7 @@
       </div>
     @endif
     <div class="d-flex flex-column align-items-center justify-content-center">
-        @foreach($user_posts->reverse() as $el)
+        @foreach($posts->reverse() as $el)
           <div class="card shadow-sm w-50 mb-5 post">
             <div class="card-header d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center">
@@ -25,13 +25,21 @@
                 <span>{{$el->user->name}}</span>
               </div>
               <div>
-                <a href="{{route('show_oneMessage', $el->id)}}" class="btn btn-primary">Редактировать</a>
-                <a href="{{route('del_oneMessage', $el->id)}}" class="btn btn-warning">Удалить</a>
+                @if ($user->id == $el->user->id)
+                  <a href="{{route('show_oneMessage', $el->id)}}" class="btn btn-primary">Редактировать</a>
+                  <a href="{{route('del_oneMessage', $el->id)}}" class="btn btn-danger">Удалить</a>
+                @endif
               </div>
             </div>
-            @php $photoSrc = $el->getMedia('media')->first() @endphp
-            @if ($photoSrc)
-              <img width="50%" height="50%" style="margin: 0 auto" src="{{$photoSrc->getUrl()}}" alt="Картинка">
+            @php $postMediaSrc = $el->getMedia('media')->first() @endphp
+            @if ($postMediaSrc)
+              @if ($postMediaSrc->mime_type=='video/mp4' || $postMediaSrc->mime_type=='video/webm')
+                <video width="50%" height="50%" controls="controls" style="margin: 0 auto">
+                  <source src="{{$postMediaSrc->getUrl()}}" type='{{$postMediaSrc->mime_type}}'>
+                </video>
+              @else
+                <img width="50%" height="50%" style="margin: 0 auto" src="{{$postMediaSrc->getUrl()}}" alt="Картинка">
+              @endif
             @endif
             <div class="card-body">
               <h4 class="card-title">{{$el->theme}}</h4>
@@ -39,15 +47,27 @@
               <hr>
               <div class="d-flex social-button">
                 <div class="social-like">
-                  <button type="button"><img src="img/like.png" alt="Лайк"></button>
-                  {{$el->likes}}
+                  <button type="button"
+                      @if ($user)
+                        data-userId="{{$user->id}}" 
+                      @endif
+                      data-postId="{{$el->id}}">
+                  <img src="img/like.png" alt="Лайк"></button>
+                  <span>{{count(json_decode($el->likes))}}</span>
                 </div>
                 <div class="social-comments">
                   <button type="button" class="button-comment"><img src="img/comment.png" alt="Комментарий"></button>
                   {{count($el->comments)}}
                 </div>
                 <div class="social-repost">
-                  <button type="button"><img src="img/repost.png" alt="Репост"></button>
+                  <button type="button" 
+                    @if ($user)
+                      data-userId="{{$user->id}}" 
+                    @endif
+                    data-postId="{{$el->id}}">
+                  <img src="img/repost.png" alt="Репост">
+                  <span>{{count($el->reposts)}}</span>
+                  </button>
                 </div>
                 <div class="social-share">
                   <button type="button"><img src="img/share.png" alt="Поделится"></button>

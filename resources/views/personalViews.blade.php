@@ -1,9 +1,9 @@
 @extends('layout')
 
-@section('title') Главная страница @endsection
+@section('title') Ваша лента @endsection
 
 @section('main_content')
-    <h1 class="d-flex justify-content-center mb-4">Последние новости</h1>
+    <h1 class="d-flex justify-content-center mb-4">Интересное</h1>
     @error('error')
         <div class="alert alert-danger">{{$message}}</div>
     @enderror
@@ -14,7 +14,6 @@
                 $postMediaSrc = $el->getMedia('media')->first(); 
                 $avatarSrc = $el->user->getMedia('avatars')->first(); 
               @endphp
-              {{-- @dd($photoSrc->mime_type); --}}
               <div class="card-header d-flex align-items-center">
                   @if ($avatarSrc)
                     <div style='width: 60px; height: 60px;' class="me-2">
@@ -24,16 +23,16 @@
                     <img src="img/defaultUserImg.png" alt="Фото пользователя">
                   @endif
                   <div class="me-2">{{$el->user->name}}</div>
-                  @if ($user && $user->id !== $el->user->id)
+                  @if ($user->id !== $el->user->id)
                     <button
-                    @if ($user->subscribeUsers->where('user_sub_id', $el->user->id)->first())
-                      class="btn btn-outline-primary subscribe-button" 
-                    @else
-                      class="btn btn-primary subscribe-button"  
-                    @endif
-                      data-userId="{{$user->id}}" 
-                      data-userSubId="{{$el->user->id}}">
-                      Отслеживать
+                        @if ($user->subscribeUsers->where('user_sub_id', $el->user->id)->first())
+                            class="btn btn-outline-primary subscribe-button" 
+                        @else
+                            class="btn btn-primary subscribe-button"  
+                        @endif
+                        data-userId="{{$user->id}}" 
+                        data-userSubId="{{$el->user->id}}">
+                        Отслеживать
                     </button>
                   @endif
               </div>
@@ -53,10 +52,10 @@
                 <div class="d-flex social-button">
                   <div class="social-like">
                     <button type="button" 
-                    @if ($user)
-                      data-userId="{{$user->id}}" 
-                    @endif
-                    data-postId="{{$el->id}}">
+                        @if ($user)
+                        data-userId="{{$user->id}}" 
+                        @endif
+                        data-postId="{{$el->id}}">
                     <img src="img/like.png" alt="Лайк"></button>
                     <span>{{count(json_decode($el->likes))}}</span>
                   </div>

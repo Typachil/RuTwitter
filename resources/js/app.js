@@ -4,11 +4,13 @@ const buttonsComment = document.querySelectorAll('.button-comment');
 const buttonsShowComments = document.querySelectorAll('.button-showComments');
 const buttonsShowSettingsEdit = document.querySelectorAll('.change_button');
 
-const formAvatarChange = document.querySelector('#formAvatarChange');
-const formPasswordChange = document.querySelector('#formPasswordChange');
-const formEmailChange = document.querySelector('#formEmailChange');
+// const formAvatarChange = document.querySelector('#formAvatarChange');
+// const formPasswordChange = document.querySelector('#formPasswordChange');
+// const formEmailChange = document.querySelector('#formEmailChange');
 
-const buttonsLikePost = document.querySelectorAll('.social-button .social-like button')
+const buttonsLikePost = document.querySelectorAll('.social-button .social-like button');
+const buttonsRepostPost = document.querySelectorAll('.social-button .social-repost button');
+const buttonsSubUser = document.querySelectorAll('.card-header .subscribe-button');
 
 buttonsComment.forEach((buttonItem) => buttonItem.addEventListener('click', (e) => {
     e.preventDefault();
@@ -33,23 +35,71 @@ buttonsShowSettingsEdit.forEach((buttonItem) => buttonItem.addEventListener('cli
 
 buttonsLikePost.forEach((buttonItem) => buttonItem.addEventListener('click', async (e) =>{
     e.preventDefault();
-    const valueLikesSpan = e.target.closest('.social-like').querySelector('span')
-    let data = {
-        "userid" : buttonItem.dataset.userid
+    if(buttonItem.dataset.userid){
+        const valueLikesSpan = e.target.closest('.social-like').querySelector('span')
+        let data = {
+            "userid" : buttonItem.dataset.userid
+        }
+        let reponse = await fetch(`/message/${buttonItem.dataset.postid}/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                "X-CSRF-Token": document.querySelector('input[name=_token]').value
+            },
+            body : JSON.stringify(data)
+        })          
+        let result = await reponse.json();
+        valueLikesSpan.innerText = result.likes_value;
     }
-    let reponse = await fetch(`/message/${buttonItem.dataset.postid}/like`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            "X-CSRF-Token": document.querySelector('input[name=_token]').value
-        },
-        body : JSON.stringify(data)
-    })
-        
-    let result = await reponse.json();
-    console.log(result);
-    valueLikesSpan.innerText = result.likes_value;
+}));
+
+buttonsRepostPost.forEach((buttonItem) => buttonItem.addEventListener('click', async (e) =>{
+    e.preventDefault();
+    if(buttonItem.dataset.userid){
+        const valueRepostSpan = e.target.closest('.social-repost').querySelector('span');
+        let data = {
+            "userid" : buttonItem.dataset.userid
+        }
+        let reponse = await fetch(`/message/${buttonItem.dataset.postid}/repost`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                "X-CSRF-Token": document.querySelector('input[name=_token]').value
+            },
+            body : JSON.stringify(data)
+        })    
+        let result = await reponse.json();
+        valueRepostSpan.innerText = result.repost_value;
+    }
+}));
+
+buttonsSubUser.forEach((buttonItem) => buttonItem.addEventListener('click', async (e) =>{
+    e.preventDefault();
+    let userId = buttonItem.dataset.userid;
+    let userSubId = buttonItem.dataset.usersubid;
+    if(userId){
+        const buttonSub = e.target;
+        let data = {
+            "usersubid" : userSubId
+        }
+        let reponse = await fetch(`/subscribe_user/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                "X-CSRF-Token": document.querySelector('input[name=_token]').value
+            },
+            body : JSON.stringify(data)
+        })    
+        let result = await reponse.json();
+        console.log(result)
+        if(result.subResult){
+            buttonSub.classList.toggle("btn-outline-primary");
+            buttonSub.classList.toggle("btn-primary");
+        }
+    }
 }));
 
 

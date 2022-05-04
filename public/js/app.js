@@ -2187,11 +2187,13 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 var buttonsComment = document.querySelectorAll('.button-comment');
 var buttonsShowComments = document.querySelectorAll('.button-showComments');
-var buttonsShowSettingsEdit = document.querySelectorAll('.change_button');
-var formAvatarChange = document.querySelector('#formAvatarChange');
-var formPasswordChange = document.querySelector('#formPasswordChange');
-var formEmailChange = document.querySelector('#formEmailChange');
+var buttonsShowSettingsEdit = document.querySelectorAll('.change_button'); // const formAvatarChange = document.querySelector('#formAvatarChange');
+// const formPasswordChange = document.querySelector('#formPasswordChange');
+// const formEmailChange = document.querySelector('#formEmailChange');
+
 var buttonsLikePost = document.querySelectorAll('.social-button .social-like button');
+var buttonsRepostPost = document.querySelectorAll('.social-button .social-repost button');
+var buttonsSubUser = document.querySelectorAll('.card-header .subscribe-button');
 buttonsComment.forEach(function (buttonItem) {
   return buttonItem.addEventListener('click', function (e) {
     e.preventDefault();
@@ -2225,11 +2227,17 @@ buttonsLikePost.forEach(function (buttonItem) {
           switch (_context.prev = _context.next) {
             case 0:
               e.preventDefault();
+
+              if (!buttonItem.dataset.userid) {
+                _context.next = 11;
+                break;
+              }
+
               valueLikesSpan = e.target.closest('.social-like').querySelector('span');
               data = {
                 "userid": buttonItem.dataset.userid
               };
-              _context.next = 5;
+              _context.next = 6;
               return fetch("/message/".concat(buttonItem.dataset.postid, "/like"), {
                 method: 'POST',
                 headers: {
@@ -2240,14 +2248,13 @@ buttonsLikePost.forEach(function (buttonItem) {
                 body: JSON.stringify(data)
               });
 
-            case 5:
+            case 6:
               reponse = _context.sent;
-              _context.next = 8;
+              _context.next = 9;
               return reponse.json();
 
-            case 8:
+            case 9:
               result = _context.sent;
-              console.log(result);
               valueLikesSpan.innerText = result.likes_value;
 
             case 11:
@@ -2260,6 +2267,117 @@ buttonsLikePost.forEach(function (buttonItem) {
 
     return function (_x) {
       return _ref.apply(this, arguments);
+    };
+  }());
+});
+buttonsRepostPost.forEach(function (buttonItem) {
+  return buttonItem.addEventListener('click', /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(e) {
+      var valueRepostSpan, data, reponse, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              e.preventDefault();
+
+              if (!buttonItem.dataset.userid) {
+                _context2.next = 11;
+                break;
+              }
+
+              valueRepostSpan = e.target.closest('.social-repost').querySelector('span');
+              data = {
+                "userid": buttonItem.dataset.userid
+              };
+              _context2.next = 6;
+              return fetch("/message/".concat(buttonItem.dataset.postid, "/repost"), {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  "X-CSRF-Token": document.querySelector('input[name=_token]').value
+                },
+                body: JSON.stringify(data)
+              });
+
+            case 6:
+              reponse = _context2.sent;
+              _context2.next = 9;
+              return reponse.json();
+
+            case 9:
+              result = _context2.sent;
+              valueRepostSpan.innerText = result.repost_value;
+
+            case 11:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+
+    return function (_x2) {
+      return _ref2.apply(this, arguments);
+    };
+  }());
+});
+buttonsSubUser.forEach(function (buttonItem) {
+  return buttonItem.addEventListener('click', /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(e) {
+      var userId, userSubId, buttonSub, data, reponse, result;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              e.preventDefault();
+              userId = buttonItem.dataset.userid;
+              userSubId = buttonItem.dataset.usersubid;
+
+              if (!userId) {
+                _context3.next = 14;
+                break;
+              }
+
+              buttonSub = e.target;
+              data = {
+                "usersubid": userSubId
+              };
+              _context3.next = 8;
+              return fetch("/subscribe_user/".concat(userId), {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  "X-CSRF-Token": document.querySelector('input[name=_token]').value
+                },
+                body: JSON.stringify(data)
+              });
+
+            case 8:
+              reponse = _context3.sent;
+              _context3.next = 11;
+              return reponse.json();
+
+            case 11:
+              result = _context3.sent;
+              console.log(result);
+
+              if (result.subResult) {
+                buttonSub.classList.toggle("btn-outline-primary");
+                buttonSub.classList.toggle("btn-primary");
+              }
+
+            case 14:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }));
+
+    return function (_x3) {
+      return _ref3.apply(this, arguments);
     };
   }());
 }); // formPasswordChange.onsubmit = async(e) => {

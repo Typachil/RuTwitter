@@ -21,6 +21,7 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="/personal_news" class="nav-link px-2 text-white">Ваша лента</a></li>
                     <li><a href="/message" class="nav-link px-2 text-white">Чирикнуть</a></li>
                     <li><a href="/about" class="nav-link px-2 text-white">О нас</a></li>
                 </ul>

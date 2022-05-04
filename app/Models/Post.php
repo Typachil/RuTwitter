@@ -9,6 +9,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\Repost;
 
 class Post extends Model implements HasMedia
 {
@@ -23,5 +24,9 @@ class Post extends Model implements HasMedia
 
     public function comments(){
         return $this->hasMany(Comment::class);
+    }
+
+    public function reposts(){
+        return $this->hasMany(Repost::class);
     }
 }

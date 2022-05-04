@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('reposts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('theme');
-            $table->string('message');
+            $table->unsignedBigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+            $table->unsignedBigInteger('post_id')->unsigned();
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('restrict');
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('reposts');
     }
 };

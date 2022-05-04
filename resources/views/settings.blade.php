@@ -3,7 +3,7 @@
 @section('title') Мои настройки @endsection
 
 @section('main_content')
-    <h1 class="mt-3 mb-4">Настройки</h1>
+    <h1 class="mt-3 mb-4">Ваши настройки {{$user->name}}</h1>
     <div class="p-3 settings-block">
         @if (session('status'))
             <div class="alert alert-success">

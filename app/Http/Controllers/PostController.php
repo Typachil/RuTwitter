@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
+use App\Models\Repost;
 
 class PostController extends Controller
 {
@@ -26,7 +27,6 @@ class PostController extends Controller
             if($value == $request->userid){
                 $likes = json_decode($post->likes);
                 array_splice($likes, $key, 1);
-                //$post->update(['likes' => json_encode($likes)]);
                 $post->likes = $likes;
                 $post->save();
 
@@ -38,6 +38,19 @@ class PostController extends Controller
         $post->save();
 
         $data = ["likes_value" => count($post->likes)];
+        return $data;
+    }
+
+    public function messageRepost($id, Request $request){
+        $user_id = $request->userid;
+        $repostUser = Repost::where('user_id', $user_id)->where('post_id', $id);
+        if($repostUser->first()){
+            $repostUser->delete();
+            $data = ["repost_value" => count(Post::find($id)->reposts)];
+            return $data;
+        }
+        Repost::create(['user_id' => $user_id, 'post_id' => $id]);
+        $data = ["repost_value" => count(Post::find($id)->reposts)];
         return $data;
     }
 
