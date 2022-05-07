@@ -14,7 +14,7 @@
                 </ul>
             </div>
         @endif
-        <form method="post" enctype="multipart/form-data" action="{{route('message_post')}}">
+        <form method="post" enctype="multipart/form-data" class="form-message" action="{{route('message_post')}}">
             @csrf
             <div class="mb-3">
                 <label for="theme" class="form-label">Тема сообщения</label>
@@ -26,7 +26,7 @@
             </div>
             <div class="mb-3">
                 <label for="file" class="form-label">Прикрепите файл</label>
-                <input class="form-control form-control-sm" name="file" id="file" type="file">
+                <input class="form-control form-control-sm" name="file" id="file" type="file" multiple>
               </div>
             <button type="submit" class="btn-success">Чирикнуть</button>
         </form>

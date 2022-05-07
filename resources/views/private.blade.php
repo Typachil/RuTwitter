@@ -3,7 +3,7 @@
 @section('title') Профиль @endsection
 
 @section('main_content')
-    <h2 class="d-flex justify-content-center mb-4">Ваши посты</h2>
+    <h2 class="d-flex justify-content-center mb-4">Ваша страница</h2>
     @if (session('status'))
       <div class="alert alert-success">
           {{ session('status') }}
@@ -52,7 +52,11 @@
                         data-userId="{{$user->id}}" 
                       @endif
                       data-postId="{{$el->id}}">
-                  <img src="img/like.png" alt="Лайк"></button>
+                  <img width="32px" height="32px" src="img/like.png" alt="Лайк"
+                      @if (!in_array($user->id ,json_decode($el->likes)))
+                        class="button-like_color"
+                      @endif
+                  ></button>
                   <span>{{count(json_decode($el->likes))}}</span>
                 </div>
                 <div class="social-comments">

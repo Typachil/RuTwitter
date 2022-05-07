@@ -57,7 +57,12 @@
                       data-userId="{{$user->id}}" 
                     @endif
                     data-postId="{{$el->id}}">
-                    <img src="img/like.png" alt="Лайк"></button>
+                    <img width="32px" height="32px" src="img/like.png"
+                      @if ($user && !in_array($user->id ,json_decode($el->likes)))
+                        class="button-like_color"
+                      @endif 
+                    alt="Лайк">
+                    </button>
                     <span>{{count(json_decode($el->likes))}}</span>
                   </div>
                   <div class="social-comments">

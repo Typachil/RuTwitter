@@ -2187,13 +2187,11 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 var buttonsComment = document.querySelectorAll('.button-comment');
 var buttonsShowComments = document.querySelectorAll('.button-showComments');
-var buttonsShowSettingsEdit = document.querySelectorAll('.change_button'); // const formAvatarChange = document.querySelector('#formAvatarChange');
-// const formPasswordChange = document.querySelector('#formPasswordChange');
-// const formEmailChange = document.querySelector('#formEmailChange');
-
+var buttonsShowSettingsEdit = document.querySelectorAll('.change_button');
 var buttonsLikePost = document.querySelectorAll('.social-button .social-like button');
 var buttonsRepostPost = document.querySelectorAll('.social-button .social-repost button');
-var buttonsSubUser = document.querySelectorAll('.card-header .subscribe-button');
+var buttonsSubUser = document.querySelectorAll('.card-header .subscribe-button'); // const formMessage = document.querySelector('.form-message');
+
 buttonsComment.forEach(function (buttonItem) {
   return buttonItem.addEventListener('click', function (e) {
     e.preventDefault();
@@ -2229,7 +2227,7 @@ buttonsLikePost.forEach(function (buttonItem) {
               e.preventDefault();
 
               if (!buttonItem.dataset.userid) {
-                _context.next = 11;
+                _context.next = 12;
                 break;
               }
 
@@ -2257,7 +2255,11 @@ buttonsLikePost.forEach(function (buttonItem) {
               result = _context.sent;
               valueLikesSpan.innerText = result.likes_value;
 
-            case 11:
+              if (result) {
+                e.target.classList.toggle("button-like_color");
+              }
+
+            case 12:
             case "end":
               return _context.stop();
           }
@@ -2380,7 +2382,25 @@ buttonsSubUser.forEach(function (buttonItem) {
       return _ref3.apply(this, arguments);
     };
   }());
-}); // formPasswordChange.onsubmit = async(e) => {
+}); // formMessage.onsubmit = async (e) => {
+//     e.preventDefault();
+//     const form = e.target;
+//     let formData = new FormData();
+//     formData.append('theme', form.elements.theme.value);
+//     formData.append('message', form.elements.message.value);
+//     formData.append('files', form.elements.file.files)
+//     let reponse = await fetch('/message', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'multipart/form-data',
+//             'Accept': 'application/json',
+//             "X-CSRF-Token": document.querySelector('input[name=_token]').value
+//         },
+//         body: formData
+//     })
+//     console.log(reponse);
+// }
+// formPasswordChange.onsubmit = async(e) => {
 //     e.preventDefault();
 //     let data = {
 //         'password': formPasswordChange.elements.password.value,

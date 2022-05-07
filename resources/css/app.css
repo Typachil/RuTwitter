@@ -1,19 +1,23 @@
-.post .social-button button, .post .card-footer button{
+.post .social-button button,
+.post .card-footer button {
     background-color: transparent;
     border: none;
     padding: 0;
 }
 
-.social-button div{
+.social-button div {
     margin-right: 1em;
 }
 
-.card-footer button{
+.card-footer button {
     margin: 0;
     padding: 0;
 }
 
-.post-avatar, .header-avatar, .settings-avatar, .comment-user_avatar{
+.post-avatar,
+.header-avatar,
+.settings-avatar,
+.comment-user_avatar {
     margin: 0;
     width: 100%;
     height: 100%;
@@ -21,15 +25,15 @@
     object-fit: cover;
 }
 
-.form-comment{
+.form-comment {
     display: none;
 }
 
-.text-end{
+.text-end {
     position: relative;
 }
 
-.profile-popup{
+.profile-popup {
     background-color: aliceblue;
     border-radius: 10%;
     padding: 2em 1em;
@@ -38,25 +42,30 @@
     right: -3.3em;
 }
 
-.text-end:hover .profile-popup{
+.text-end:hover .profile-popup {
     display: flex;
     flex: column;
 }
 
-.comments-list{
+.comments-list {
     display: none;
 }
 
-.block{
+.block {
     margin-bottom: 1em;
     border-bottom: 1px solid #000;
 }
 
-.block-change{
+.block-change {
     display: flex;
     align-items: flex-end;
 }
 
-.settings-block form{
+.settings-block form {
     display: none;
 }
+
+.button-like_color{
+    filter: brightness(0);
+}
+
